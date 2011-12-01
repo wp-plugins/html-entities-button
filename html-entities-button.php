@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.3.1
+Version: 1.3.2
 Author URI: http://12net.jp/
 */
 
@@ -14,7 +14,7 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.1' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.2' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
@@ -155,27 +155,32 @@ function togglePulldown( list, button ) {
 			keepPulldownList = false;
 		}
 	} );
+	return false;
 }
 function toggleHtmlEntityList() {
 	jQuery( '#postLinkList' ).css( 'display', 'none' );
 	jQuery( '#htmlSmilyList' ).css( 'display', 'none' );
 	togglePulldown( '#htmlEntityList', '#htmlEntityButton' );
+	return false;
 }
 function toggleHtmlSmilyList() {
 	jQuery( '#postLinkList' ).css( 'display', 'none' );
 	jQuery( '#htmlEntityList' ).css( 'display', 'none' );
 	togglePulldown( '#htmlSmilyList', '#htmlSmilyButton' );
+	return false;
 }
 function togglePostLinkList() {
 	jQuery( '#htmlEntityList' ).css( 'display', 'none' );
 	jQuery( '#htmlSmilyList' ).css( 'display', 'none' );
 	togglePulldown( '#postLinkList', '#postLinkButton' );
+	return false;
 }
 function hiddenPulldownLists() {
 	jQuery( '.mcePulldownList' ).each ( function () {
 		if ( jQuery( this ).css( 'display' ) == 'block' )
 			jQuery( this ).css( 'display', 'none' );
 	} );
+	return false;
 }
 function enterHtmlEntity( entity ) {
 	if ( entity == '' ) {
@@ -200,6 +205,7 @@ function enterHtmlSmily( smily, id ) {
 function enterPostLink( postno ) {
 	edInsertContent( edCanvas, '<a href="'+posts[postno]['url']+'" title="'+posts[postno]['title']+'">'+posts[postno]['title']+'</a>' );
 	jQuery( '#postLinkList' ).css( 'display', 'none' );
+	return false;
 }
 //]]>
 </script>
