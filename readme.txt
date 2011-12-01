@@ -4,7 +4,7 @@ Donate link: http://elearn.jp/wpman/column/html-entities-button.html
 Tags: post, page, admin
 Requires at least: 3.2.0
 Tested up to: 3.3rc1
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 
 HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 
@@ -25,6 +25,7 @@ HTML entities button is a few inserting HTML entities button add to the admin po
 = Translators =
 
 * Japanese(ja) - [Takenori Matsuura](http://12net.jp/)
+* French(fr_FR) - [Emilie Colin]
 
 You can send your own language pack to me.
 
@@ -57,6 +58,9 @@ Check for [Convert emoticons like :-) and :-P to graphics on display] in Writing
 3. Choose recent posts.
 
 == Changelog ==
+
+= 1.3.3 =
+* Added French language
 
 = 1.3.2 =
 * Bug fix for IE

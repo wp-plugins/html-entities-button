@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.3.2
+Version: 1.3.3
 Author URI: http://12net.jp/
 */
 
@@ -14,7 +14,7 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.2' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.3' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
