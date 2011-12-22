@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.3.3
+Version: 1.3.4
 Author URI: http://12net.jp/
 */
 
@@ -14,7 +14,7 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.3' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.4' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
@@ -36,17 +36,17 @@ class html_entities_button {
 ?>
 <style type="text/css">
 <!--
-.htmlAdvancedButton { padding: 3px 2px 0px 0px; float: left; }
-.htmlAdvancedButton table { border-collapse: collapse; border-spacing: 0px; }
-.htmlAdvancedButton table td { padding: 0px; text-align: center; vertical-align: top; }
-.htmlAdvancedButton a { border-width: 1px; border-style: solid; border-color: #C3C3C3; line-height: 18px; font-size: 12px; display: inline-block; text-decoration: none; color: #464646; margin: 0px 0px 4px; background: url('./images/fade-butt.png') repeat-x; height: 18px; }
-.htmlAdvancedButton a:hover { border-color: #AAA; background: #DDD; }
-.htmlAdvancedButton a.mceActionButton { width: 16px; padding: 2px 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -khtml-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -khtml-border-top-left-radius: 4px; border-top-left-radius: 4px; }
-#htmlSmilyButton span.mceActionButton img { padding: 1px 0px 2px 0px; height: 15px; }
-#postLinkButton span.mceActionButton { display: inline-block; width: 16px; background: transparent url('./images/menu.png') no-repeat scroll -96px -38px; }
-.htmlAdvancedButton a.mceOpen { width: 12px; height: 22px; border-left: 0 none !important; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; -khtml-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -khtml-border-top-right-radius: 4px; border-top-right-radius: 4px; }
-.htmlAdvancedButton span.mceOpen { background-image: url('<?php echo plugins_url( '', __FILE__ ); ?>/images/down_arrow.gif'); background-position: 1px 2px; background-repeat: no-repeat; padding: 1px; width: 10px; height: 20px; display: inline-block; }
-.mcePulldownList { position: absolute; display: none; z-index: 200000; border: 1px solid #AAA; background-color: #EEEEEE; padding: 5px; }
+.quicktags-toolbar .htmlAdvancedButton { padding: 2px 2px 0px 0px; float: left; }
+.quicktags-toolbar .htmlAdvancedButton table { border-collapse: collapse; border-spacing: 0px; }
+.quicktags-toolbar .htmlAdvancedButton table td { padding: 0px; text-align: center; vertical-align: top; }
+.quicktags-toolbar .htmlAdvancedButton a { border-width: 1px; border-style: solid; border-color: #C3C3C3; line-height: 18px; font-size: 12px; display: inline-block; text-decoration: none; color: #464646; margin: 0px 0px 4px; background: url('./images/fade-butt.png') repeat-x; height: 18px; }
+.quicktags-toolbar .htmlAdvancedButton a:hover { border-color: #AAA; background: #DDD; }
+.quicktags-toolbar .htmlAdvancedButton a.mceActionButton { width: 16px; padding: 2px 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -khtml-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -khtml-border-top-left-radius: 4px; border-top-left-radius: 4px; }
+.quicktags-toolbar #htmlSmilyButton span.mceActionButton img { padding: 1px 0px 2px 0px; height: 15px; }
+.quicktags-toolbar #postLinkButton span.mceActionButton { display: inline-block; width: 16px; background: transparent url('./images/menu.png') no-repeat scroll -96px -38px; }
+.quicktags-toolbar .htmlAdvancedButton a.mceOpen { width: 12px; height: 22px; border-left: 0 none !important; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; -khtml-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -khtml-border-top-right-radius: 4px; border-top-right-radius: 4px; }
+.quicktags-toolbar .htmlAdvancedButton span.mceOpen { background-image: url('<?php echo plugins_url( '', __FILE__ ); ?>/images/down_arrow.gif'); background-position: 1px 2px; background-repeat: no-repeat; padding: 1px; width: 10px; height: 20px; display: inline-block; }
+.quicktags-toolbar .mcePulldownList { position: absolute; display: none; z-index: 200000; border: 1px solid #AAA; background-color: #EEEEEE; padding: 5px; }
 #htmlEntityList a { display: inline-block; padding: 2px 4px 2px 4px; width: 1.5em; text-align: center; text-decoration: none; }
 #htmlEntityList a:hover, #htmlSmilyList a:hover { background-color: #FFFFFF; }
 #htmlSmilyList a { display: inline-block; padding: 4px 4px 4px 4px; width: 15px; text-align: center; text-decoration: none; }

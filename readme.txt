@@ -4,7 +4,7 @@ Donate link: http://elearn.jp/wpman/column/html-entities-button.html
 Tags: post, page, admin
 Requires at least: 3.2.0
 Tested up to: 3.3
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 
 HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 
@@ -58,6 +58,9 @@ Check for [Convert emoticons like :-) and :-P to graphics on display] in Writing
 3. Choose recent posts.
 
 == Changelog ==
+
+= 1.3.4 =
+* Modify button style for WordPress 3.3
 
 = 1.3.3 =
 * Added French language
