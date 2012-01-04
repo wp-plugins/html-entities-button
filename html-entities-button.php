@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.3.4
+Version: 1.3.5
 Author URI: http://12net.jp/
 */
 
@@ -14,7 +14,7 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.4' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.5' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
@@ -46,7 +46,8 @@ class html_entities_button {
 .quicktags-toolbar #postLinkButton span.mceActionButton { display: inline-block; width: 16px; background: transparent url('./images/menu.png') no-repeat scroll -96px -38px; }
 .quicktags-toolbar .htmlAdvancedButton a.mceOpen { width: 12px; height: 22px; border-left: 0 none !important; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; -khtml-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -khtml-border-top-right-radius: 4px; border-top-right-radius: 4px; }
 .quicktags-toolbar .htmlAdvancedButton span.mceOpen { background-image: url('<?php echo plugins_url( '', __FILE__ ); ?>/images/down_arrow.gif'); background-position: 1px 2px; background-repeat: no-repeat; padding: 1px; width: 10px; height: 20px; display: inline-block; }
-.quicktags-toolbar .mcePulldownList { position: absolute; display: none; z-index: 200000; border: 1px solid #AAA; background-color: #EEEEEE; padding: 5px; }
+
+.mcePulldownList { position: absolute; display: none; z-index: 200000; border: 1px solid #AAA; background-color: #EEEEEE; padding: 5px; }
 #htmlEntityList a { display: inline-block; padding: 2px 4px 2px 4px; width: 1.5em; text-align: center; text-decoration: none; }
 #htmlEntityList a:hover, #htmlSmilyList a:hover { background-color: #FFFFFF; }
 #htmlSmilyList a { display: inline-block; padding: 4px 4px 4px 4px; width: 15px; text-align: center; text-decoration: none; }
