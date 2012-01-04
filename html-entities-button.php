@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.3.5
+Version: 1.3.6
 Author URI: http://12net.jp/
 */
 
@@ -52,7 +52,7 @@ class html_entities_button {
 #htmlEntityList a:hover, #htmlSmilyList a:hover { background-color: #FFFFFF; }
 #htmlSmilyList a { display: inline-block; padding: 4px 4px 4px 4px; width: 15px; text-align: center; text-decoration: none; }
 #postLinkList { width: 25em; max-height: 15.2em; overflow: auto; }
-#postLinkList ul { -webkit-margin-before: 0em; }
+#postLinkList ul { -webkit-margin-before: 0; margin-left: 0; }
 #postLinkList li { float: left; clear: both; margin-bottom: 2px; line-height: 120%; }
 #postLinkList li:hover { background-color: #FFFFFF; }
 #postLinkList li a { text-decoration: none; }
