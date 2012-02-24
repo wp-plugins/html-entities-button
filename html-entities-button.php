@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.3.6
+Version: 1.4.0
 Author URI: http://12net.jp/
 */
 
@@ -14,7 +14,7 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.3.5' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.4.0' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
@@ -42,6 +42,7 @@ class html_entities_button {
 .quicktags-toolbar .htmlAdvancedButton a { border-width: 1px; border-style: solid; border-color: #C3C3C3; line-height: 18px; font-size: 12px; display: inline-block; text-decoration: none; color: #464646; margin: 0px 0px 4px; background: url('./images/fade-butt.png') repeat-x; height: 18px; }
 .quicktags-toolbar .htmlAdvancedButton a:hover { border-color: #AAA; background: #DDD; }
 .quicktags-toolbar .htmlAdvancedButton a.mceActionButton { width: 16px; padding: 2px 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -khtml-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -khtml-border-top-left-radius: 4px; border-top-left-radius: 4px; }
+.quicktags-toolbar #convertSpeCharsButton a.mceActionButton { font-size: 75%; width: 4em; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; }
 .quicktags-toolbar #htmlSmilyButton span.mceActionButton img { padding: 1px 0px 2px 0px; height: 15px; }
 .quicktags-toolbar #postLinkButton span.mceActionButton { display: inline-block; width: 16px; background: transparent url('./images/menu.png') no-repeat scroll -96px -38px; }
 .quicktags-toolbar .htmlAdvancedButton a.mceOpen { width: 12px; height: 22px; border-left: 0 none !important; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; -khtml-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -khtml-border-top-right-radius: 4px; border-top-right-radius: 4px; }
@@ -79,7 +80,8 @@ var posts = new Array( <?php echo count( $recent_posts ); ?>);
 ?>
 jQuery.event.add( window, 'load', function( ) {
 jQuery( '#ed_toolbar' ).each( function() {
-	var hab_buttons = '<div id="htmlEntityButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return enterHtmlEntity(\'\');" title="<?php _e( 'Insert a HTML entitiy', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title="&amp;lt;">&lt;</span></a></td><td><a href="javascript:void();" onclick="return toggleHtmlEntityList();" title="<?php _e( 'Choose HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div>';
+	var hab_buttons = '<div id="convertSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return convertSpeChars();" title="<?php _e( 'Convert special characters to HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&raquo;&amp;amp;</span></a></td></tr></table></div>';
+	hab_buttons += '<div id="htmlEntityButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return enterHtmlEntity(\'\');" title="<?php _e( 'Insert a HTML entitiy', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title="&amp;lt;">&lt;</span></a></td><td><a href="javascript:void();" onclick="return toggleHtmlEntityList();" title="<?php _e( 'Choose HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div>';
 <?php if ( $smiles ) { ?>
 	hab_buttons += '<div id="htmlSmilyButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return enterHtmlSmily(\'\');" title="<?php _e( 'Insert a emoticon', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title=":smile:"><?php echo trim( str_replace( '\'', '"', convert_smilies( ':smile:' ) ) ); ?></span></a></td><td><a href="javascript:void();" onclick="return toggleHtmlSmilyList();" title="<?php _e( 'Choose emoticons', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div>';
 <?php } ?>
@@ -206,6 +208,30 @@ function enterHtmlSmily( smily, id ) {
 function enterPostLink( postno ) {
 	edInsertContent( edCanvas, '<a href="'+posts[postno]['url']+'" title="'+posts[postno]['title']+'">'+posts[postno]['title']+'</a>' );
 	jQuery( '#postLinkList' ).css( 'display', 'none' );
+	return false;
+}
+function convertSpeChars() {
+	var canvas = document.getElementById( wpActiveEditor );
+	if ( !canvas ) return false;
+
+	if ( document.selection ) {
+		// for IE
+		canvas.focus();
+		var sel = document.selection.createRange();
+		sel.text = sel.text.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/'/g,"&#039;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+		canvas.focus();
+	} else if ( canvas.selectionStart != canvas.selectionEnd ) {
+		// for Firefox, Webkit based, Opera
+		var startPos = canvas.selectionStart;
+		var endPos = canvas.selectionEnd;
+		var scrollTop = canvas.scrollTop;
+		var replaced = canvas.value.substring( startPos, endPos ).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/'/g,"&#039;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+		canvas.value = canvas.value.substring( 0, startPos ) + replaced + canvas.value.substring( endPos, canvas.value.length );
+		canvas.focus();
+		canvas.selectionStart = startPos + replaced.length;
+		canvas.selectionEnd = startPos + replaced.length;
+		canvas.scrollTop = scrollTop;
+	}
 	return false;
 }
 //]]>
