@@ -4,12 +4,12 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.4.0
+Version: 1.4.1
 Author URI: http://12net.jp/
 */
 
 /*
-    Copyright (C) 2011 tmatsuur (Email: takenori dot matsuura at 12net dot jp)
+    Copyright (C) 2011-2013 tmatsuur (Email: takenori dot matsuura at 12net dot jp)
            This program is licensed under the GNU GPL Version 2.
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
@@ -39,7 +39,7 @@ class html_entities_button {
 .quicktags-toolbar .htmlAdvancedButton { padding: 2px 2px 0px 0px; float: left; }
 .quicktags-toolbar .htmlAdvancedButton table { border-collapse: collapse; border-spacing: 0px; }
 .quicktags-toolbar .htmlAdvancedButton table td { padding: 0px; text-align: center; vertical-align: top; }
-.quicktags-toolbar .htmlAdvancedButton a { border-width: 1px; border-style: solid; border-color: #C3C3C3; line-height: 18px; font-size: 12px; display: inline-block; text-decoration: none; color: #464646; margin: 0px 0px 4px; background: url('./images/fade-butt.png') repeat-x; height: 18px; }
+.quicktags-toolbar .htmlAdvancedButton a { border-width: 1px;border-style: solid;border-color: #C3C3C3;line-height: 18px;font-size: 12px;display: inline-block;text-decoration: none;color: #464646;margin: 0px 0px 4px;height: 18px;background: #eee; background-image: -webkit-gradient(linear,left bottom,left top,from(#e3e3e3),to(#fff));background-image: -webkit-linear-gradient(bottom,#e3e3e3,#fff);background-image: -moz-linear-gradient(bottom,#e3e3e3,#fff);background-image: -o-linear-gradient(bottom,#e3e3e3,#fff);background-image: linear-gradient(to top,#e3e3e3,#fff); }
 .quicktags-toolbar .htmlAdvancedButton a:hover { border-color: #AAA; background: #DDD; }
 .quicktags-toolbar .htmlAdvancedButton a.mceActionButton { width: 16px; padding: 2px 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -khtml-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -khtml-border-top-left-radius: 4px; border-top-left-radius: 4px; }
 .quicktags-toolbar #convertSpeCharsButton a.mceActionButton { font-size: 75%; width: 4em; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; }

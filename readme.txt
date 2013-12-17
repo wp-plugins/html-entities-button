@@ -3,8 +3,8 @@ Contributors: tmatsuur
 Donate link: http://elearn.jp/wpman/column/html-entities-button.html
 Tags: post, page, admin
 Requires at least: 3.2.0
-Tested up to: 3.6.1
-Stable tag: 1.4.0
+Tested up to: 3.8
+Stable tag: 1.4.1
 
 HTML entities button is a few inserting HTML entities button add to the admin post/page editor(HTML mode).
 
@@ -60,6 +60,9 @@ Check for [Convert emoticons like :-) and :-P to graphics on display] in Writing
 4. Convert special characters
 
 == Changelog ==
+
+= 1.4.1 =
+* The appearance of the button was changed.
 
 = 1.4.0 =
 * Added convert special characters button.
