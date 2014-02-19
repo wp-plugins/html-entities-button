@@ -2,44 +2,88 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HTML entities button\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-24 12:30+0900\n"
-"PO-Revision-Date: 2012-02-24 12:33+0900\n"
-"Last-Translator: tmatsuur <takenori.matsuura@12net.jp>\n"
+"POT-Creation-Date: 2014-02-17 18:24+0900\n"
+"PO-Revision-Date: 2014-02-17 18:24+0900\n"
+"Last-Translator: takenori matsuura <takenori.matsuura@gmail.com>\n"
 "Language-Team: \n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;_e;__\n"
-"X-Poedit-Basepath: C:\\Program Files (x86)\\Apache Group\\Apache2\\htdocs\\\n"
-"X-Poedit-Language: Japanese\n"
-"X-Poedit-Country: JAPAN\n"
+"X-Poedit-Basepath: C:\\Program Files (x86)\\Apache Software Foundation"
+"\\Apache2.2\\htdocs\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: wp-content\\plugins\\html-entities-button\n"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:83
+#: wp-content\plugins\html-entities-button/html-entities-button.php:43
+msgid "html entities button"
+msgstr ""
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:56
+msgid "Settings saved."
+msgstr ""
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:61
+msgid "Settings"
+msgstr ""
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:72
+msgid "Buttons"
+msgstr "ボタン"
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:74
+#: wp-content\plugins\html-entities-button/html-entities-button.php:163
 msgid "Convert special characters to HTML entities"
 msgstr "特殊文字をHTMLエンティティに変換"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:84
+#: wp-content\plugins\html-entities-button/html-entities-button.php:75
+#: wp-content\plugins\html-entities-button/html-entities-button.php:165
+msgid "Convert HTML entities to special characters"
+msgstr "HTMLエンティティを特殊文字に変換"
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:76
+#: wp-content\plugins\html-entities-button/html-entities-button.php:167
 msgid "Insert a HTML entitiy"
 msgstr "HTMLエンティティを挿入"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:84
+#: wp-content\plugins\html-entities-button/html-entities-button.php:76
+#: wp-content\plugins\html-entities-button/html-entities-button.php:167
 msgid "Choose HTML entities"
 msgstr "HTMLエンティティを選択して挿入"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:86
+#: wp-content\plugins\html-entities-button/html-entities-button.php:77
+#: wp-content\plugins\html-entities-button/html-entities-button.php:169
 msgid "Insert a emoticon"
 msgstr "顔文字を挿入"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:86
+#: wp-content\plugins\html-entities-button/html-entities-button.php:77
+#: wp-content\plugins\html-entities-button/html-entities-button.php:169
 msgid "Choose emoticons"
 msgstr "顔文字を選択して挿入"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:88
+#: wp-content\plugins\html-entities-button/html-entities-button.php:78
+#: wp-content\plugins\html-entities-button/html-entities-button.php:171
 msgid "Insert most recent post link"
 msgstr "直前の投稿記事のリンクを挿入"
 
-#: wp-content\plugins\html-entities-button/html-entities-button.php:88
+#: wp-content\plugins\html-entities-button/html-entities-button.php:78
+#: wp-content\plugins\html-entities-button/html-entities-button.php:171
 msgid "Choose recent post link"
 msgstr "最近の投稿記事を選択して挿入"
 
+#: wp-content\plugins\html-entities-button/html-entities-button.php:82
+msgid "Placement"
+msgstr "配置"
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:84
+msgid "It arranges in front of standard buttons."
+msgstr "標準ボタンの前に配置する。"
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:85
+msgid "It arranges after standard buttons. "
+msgstr "標準ボタンの後に配置する。"
+
+#: wp-content\plugins\html-entities-button/html-entities-button.php:90
+msgid "Save"
+msgstr ""
