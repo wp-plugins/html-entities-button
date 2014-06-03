@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.5.0
+Version: 1.5.1
 Author URI: http://12net.jp/
 */
 
@@ -14,7 +14,7 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.5.0' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.5.1' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
@@ -58,6 +58,7 @@ class html_entities_button {
 		add_options_page( __( 'html entities button' ), __( 'html entities button' ), 9, self::PROPERTIES_PAGE_NAME, array( $this, 'properties' ) );
 	}
 	function properties() {
+		global $wp_version;
 		$message = '';
 		$properties = get_option( 'html_entities_button', array( 'place'=>'front', 'convertSpeChars'=>true, 'decodeSpeChars'=>true, 'htmlEntity'=>true, 'htmlSmily'=>true, 'postLink'=>true ) );
 		if ( isset( $_POST['properties'] ) ) {
@@ -74,7 +75,7 @@ class html_entities_button {
 <div id="<?php echo self::PROPERTIES_PAGE_NAME; ?>" class="wrap">
 <div id="icon-options-general" class="icon32"><br /></div>
 <h2><?php echo __( 'Settings' ); ?></h2>
-<?php if ( $message != '' ) { global $wp_version; ?>
+<?php if ( $message != '' ) { ?>
 <?php if ( version_compare( $wp_version, '3.5', '>=' ) ) { ?>
 <div id="setting-error-settings_updated" class="updated settings-error"><p><strong><?php echo $message; ?></strong></p></div>
 <?php } else { ?>
@@ -110,6 +111,7 @@ class html_entities_button {
 <?php
 	}
 	function style() {
+		global $wp_version;
 ?>
 <style type="text/css">
 <!--
@@ -141,13 +143,21 @@ class html_entities_button {
 
 td.quicktags-toolbar input[type=checkbox] { vertical-align: 0.3em; }
 
+<?php if ( version_compare( $wp_version, '3.8', '>=' ) ) { ?>
 @media screen and (max-width: 782px) {
+<?php if ( version_compare( $wp_version, '3.9', '>=' ) ) { ?>
+.quicktags-toolbar .htmlAdvancedButton a.mceActionButton { padding: 6px 12px; }
+.quicktags-toolbar .htmlAdvancedButton a.mceOpen { width: 32px; height: 30px; }
+.quicktags-toolbar .htmlAdvancedButton span.mceOpen { background-position: 1px 6px; height: 26px; }
+<?php } else { ?>
 .quicktags-toolbar .htmlAdvancedButton a.mceActionButton { padding: 10px 12px; }
 .quicktags-toolbar .htmlAdvancedButton a.mceOpen { width: 32px; height: 38px; }
 .quicktags-toolbar .htmlAdvancedButton span.mceOpen { background-position: 1px 10px; height: 34px; }
+<?php } ?>
 #htmlEntityList a, #htmlSmilyList a { padding: 10px; }
 #postLinkList li span { line-height: 200%; }
 }
+<?php } ?>
 -->
 </style>
 <?php
