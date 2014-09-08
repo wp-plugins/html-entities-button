@@ -3,7 +3,7 @@ Contributors: tmatsuur
 Donate link: http://elearn.jp/wpman/column/html-entities-button.html
 Tags: post, page, admin
 Requires at least: 3.2.0
-Tested up to: 3.9.1
+Tested up to: 4.0.0
 Stable tag: 1.5.1
 
 HTML entities button is a few inserting HTML entities button add to the admin post/page editor(HTML mode).
