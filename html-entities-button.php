@@ -4,17 +4,17 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.5.2
+Version: 1.5.3
 Author URI: http://12net.jp/
 */
 
 /*
-    Copyright (C) 2011-2014 tmatsuur (Email: takenori dot matsuura at 12net dot jp)
+    Copyright (C) 2011-2015 tmatsuur (Email: takenori dot matsuura at 12net dot jp)
            This program is licensed under the GNU GPL Version 2.
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.5.2' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.5.3' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
@@ -44,7 +44,7 @@ class html_entities_button {
 			if ( in_array( $_pagenow, array( 'post.php', 'post-new.php', 'page.php', 'page-new.php' ) ) ) {
 				add_action( 'admin_head', array( $this, 'style' ) );
 				add_action( 'admin_footer', array( $this, 'setup' ) );
-			} else if ( $_pagenow == 'options-general.php' && $_GET['page'] == self::PROPERTIES_PAGE_NAME ) {
+			} else if ( $_pagenow == 'options-general.php' && isset( $_GET['page'] ) && $_GET['page'] == self::PROPERTIES_PAGE_NAME ) {
 				add_action( 'admin_head', array( $this, 'style' ) );
 			}
 		}
