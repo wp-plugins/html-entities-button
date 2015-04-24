@@ -4,7 +4,7 @@ Plugin Name: HTML entities button
 Plugin URI: http://elearn.jp/wpman/column/html-entities-button.html
 Description: HTML entities button is a few inserting HTML entities button add to the admin post/page editor.
 Author: tmatsuur
-Version: 1.5.3
+Version: 1.6.0
 Author URI: http://12net.jp/
 */
 
@@ -14,10 +14,58 @@ Author URI: http://12net.jp/
 */
 define( 'HTML_ENTITIES_BUTTON_DOMAIN', 'html-entities-button' );
 define( 'HTML_ENTITIES_BUTTON_DB_VERSION_NAME', 'html-entities-button-db-version' );
-define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.5.3' );
+define( 'HTML_ENTITIES_BUTTON_DB_VERSION', '1.6.0' );
 
 $plugin_html_entities_button = new html_entities_button();
 class html_entities_button {
+	var $wpsmiliestrans = array(
+		':mrgreen:' => 'icon_mrgreen.gif',
+		':neutral:' => 'icon_neutral.gif',
+		':twisted:' => 'icon_twisted.gif',
+		  ':arrow:' => 'icon_arrow.gif',
+		  ':shock:' => 'icon_eek.gif',
+		  ':smile:' => 'icon_smile.gif',
+		    ':???:' => 'icon_confused.gif',
+		   ':cool:' => 'icon_cool.gif',
+		   ':evil:' => 'icon_evil.gif',
+		   ':grin:' => 'icon_biggrin.gif',
+		   ':idea:' => 'icon_idea.gif',
+		   ':oops:' => 'icon_redface.gif',
+		   ':razz:' => 'icon_razz.gif',
+		   ':roll:' => 'icon_rolleyes.gif',
+		   ':wink:' => 'icon_wink.gif',
+		    ':cry:' => 'icon_cry.gif',
+		    ':eek:' => 'icon_surprised.gif',
+		    ':lol:' => 'icon_lol.gif',
+		    ':mad:' => 'icon_mad.gif',
+		    ':sad:' => 'icon_sad.gif',
+		      '8-)' => 'icon_cool.gif',
+		      '8-O' => 'icon_eek.gif',
+		      ':-(' => 'icon_sad.gif',
+		      ':-)' => 'icon_smile.gif',
+		      ':-?' => 'icon_confused.gif',
+		      ':-D' => 'icon_biggrin.gif',
+		      ':-P' => 'icon_razz.gif',
+		      ':-o' => 'icon_surprised.gif',
+		      ':-x' => 'icon_mad.gif',
+		      ':-|' => 'icon_neutral.gif',
+		      ';-)' => 'icon_wink.gif',
+		// This one transformation breaks regular text with frequency.
+		//     '8)' => 'icon_cool.gif',
+		       '8O' => 'icon_eek.gif',
+		       ':(' => 'icon_sad.gif',
+		       ':)' => 'icon_smile.gif',
+		       ':?' => 'icon_confused.gif',
+		       ':D' => 'icon_biggrin.gif',
+		       ':P' => 'icon_razz.gif',
+		       ':o' => 'icon_surprised.gif',
+		       ':x' => 'icon_mad.gif',
+		       ':|' => 'icon_neutral.gif',
+		       ';)' => 'icon_wink.gif',
+		      ':!:' => 'icon_exclaim.gif',
+		      ':?:' => 'icon_question.gif',
+		);
+	var $properties = null;
 	const PROPERTIES_PAGE_NAME = 'html-entities-button';
 
 	function __construct() {
@@ -47,6 +95,8 @@ class html_entities_button {
 			} else if ( $_pagenow == 'options-general.php' && isset( $_GET['page'] ) && $_GET['page'] == self::PROPERTIES_PAGE_NAME ) {
 				add_action( 'admin_head', array( $this, 'style' ) );
 			}
+		} else {
+			add_filter( 'template_include', array( $this, 'rewind_classic_smiley' ) );
 		}
 	}
 	function init() {
@@ -57,22 +107,62 @@ class html_entities_button {
 	function admin_menu() {
 		add_options_page( __( 'html entities button' ), __( 'html entities button' ), 'manage_options', self::PROPERTIES_PAGE_NAME, array( $this, 'properties' ) );
 	}
+	function rewind_classic_smiley( $template ) {
+		if ( $this->_properties( 'classicSmiley' ) && $this->_classic_smiley_available() ) {
+			global $wpsmiliestrans;
+			$wpsmiliestrans = $this->wpsmiliestrans;
+		}
+		return $template;
+	}
+	private function _default_properties() {
+		return array( 'place'=>'front', 'convertSpeChars'=>true, 'decodeSpeChars'=>true, 'htmlEntity'=>true, 'htmlSmily'=>true, 'postLink'=>true, 'classicSmiley'=>false );
+	}
+	private function _properties( $name = '', $value = true, $default = true ) {
+		if ( is_null( $this->properties ) )
+			$this->properties = get_option( 'html_entities_button', $this->_default_properties() );
+		if ( !isset( $this->properties[$name] ) )
+			return $default;
+		return ( $this->properties[$name] == $value );
+	}
+	private function _classic_smiley_available() {
+		static $available;
+		if ( isset( $available ) )
+			return $available;
+		$img = 'icon_smile.gif';
+		$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
+		$available = ( @file_get_contents( $src_url, NULL, NULL, 0, 3 ) === 'GIF' );
+		return $available;
+	}
+	private function _nonce_suffix() {
+		return date_i18n( 'His TO', filemtime( __FILE__ ) );
+	}
 	function properties() {
 		global $wp_version;
 		$message = '';
-		$properties = get_option( 'html_entities_button', array( 'place'=>'front', 'convertSpeChars'=>true, 'decodeSpeChars'=>true, 'htmlEntity'=>true, 'htmlSmily'=>true, 'postLink'=>true ) );
+		$properties = get_option( 'html_entities_button', $this->_default_properties() );
 		if ( isset( $_POST['properties'] ) ) {
+			check_admin_referer( self::PROPERTIES_PAGE_NAME.$this->_nonce_suffix() );
+
 			$properties['place'] = in_array( $_POST['properties']['place'], array( 'front', 'after' ) )? $_POST['properties']['place']: 'front';
 			$properties['convertSpeChars'] = isset( $_POST['properties']['convertSpeChars'] );
 			$properties['decodeSpeChars'] = isset( $_POST['properties']['decodeSpeChars'] );
 			$properties['htmlEntity'] = isset( $_POST['properties']['htmlEntity'] );
 			$properties['htmlSmily'] = isset( $_POST['properties']['htmlSmily'] );
 			$properties['postLink'] = isset( $_POST['properties']['postLink'] );
+			$properties['classicSmiley'] = isset( $_POST['properties']['classicSmiley'] );
 			update_option( 'html_entities_button', $properties );
 			$message = __( 'Settings saved.' );
 		}
+		if ( !isset( $properties['classicSmiley'] ) )
+			$properties['classicSmiley'] = false;
+
+		if ( $properties['classicSmiley'] && $this->_classic_smiley_available() ) {
+			global $wpsmiliestrans;
+			$new_wpsmiliestrans = $wpsmiliestrans;	// save
+			$wpsmiliestrans = $this->wpsmiliestrans;
+		}
 ?>
-<div id="<?php echo self::PROPERTIES_PAGE_NAME; ?>" class="wrap">
+<div id="<?php echo self::PROPERTIES_PAGE_NAME; ?>-properties" class="wrap">
 <div id="icon-options-general" class="icon32"><br /></div>
 <h2><?php echo __( 'Settings' ); ?></h2>
 <?php if ( $message != '' ) { ?>
@@ -83,32 +173,45 @@ class html_entities_button {
 <?php } } ?>
 
 <form method="post" id="form-properties">
+<?php wp_nonce_field( self::PROPERTIES_PAGE_NAME.$this->_nonce_suffix() ); ?>
 <table class="form-table">
-<tr valign="top">
+<tr style="vertical-align: top;">
 <th><?php _e( 'Buttons', HTML_ENTITIES_BUTTON_DOMAIN ); ?></th>
 <td class="quicktags-toolbar">
-<input type="checkbox" name="properties[convertSpeChars]" value="1" <?php checked( $properties['convertSpeChars'] ); ?> />&nbsp;<div id="convertSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" title="<?php _e( 'Convert special characters to HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&raquo; &amp;amp;</span></a></td></tr></table></div><br />
-<input type="checkbox" name="properties[decodeSpeChars]" value="1" <?php checked( $properties['decodeSpeChars'] ); ?> />&nbsp;<div id="decodeSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" title="<?php _e( 'Convert HTML entities to special characters', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&amp; &laquo;</span></a></td></tr></table></div><br />
-<input type="checkbox" name="properties[htmlEntity]" value="1" <?php checked( $properties['htmlEntity'] ); ?> />&nbsp;<div id="htmlEntityButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" title="<?php _e( 'Insert a HTML entitiy', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title="&amp;lt;">&lt;</span></a></td><td><a href="javascript:void();" title="<?php _e( 'Choose HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div><br />
-<input type="checkbox" name="properties[htmlSmily]" value="1" <?php checked( $properties['htmlSmily'] ); ?> />&nbsp;<div id="htmlSmilyButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" title="<?php _e( 'Insert a emoticon', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title=":smile:"><?php echo trim( str_replace( '\'', '"', convert_smilies( ':smile:' ) ) ); ?></span></a></td><td><a href="javascript:void();" title="<?php _e( 'Choose emoticons', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div><br />
-<input type="checkbox" name="properties[postLink]" value="1" <?php checked( $properties['postLink'] ); ?> />&nbsp;<div id="postLinkButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" title="<?php _e( 'Insert most recent post link', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span  class="mceActionButton">&nbsp;</span></a></td><td><a href="javascript:void();" title="<?php _e( 'Choose recent post link', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span  class="mceOpen"></span></a></td></tr></table></div><br />
+<input type="checkbox" name="properties[convertSpeChars]" value="1" <?php checked( $properties['convertSpeChars'] ); ?> />&nbsp;<div id="convertSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void()" title="<?php _e( 'Convert special characters to HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&raquo; &amp;amp;</span></a></td></tr></table></div><br />
+<input type="checkbox" name="properties[decodeSpeChars]" value="1" <?php checked( $properties['decodeSpeChars'] ); ?> />&nbsp;<div id="decodeSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void()" title="<?php _e( 'Convert HTML entities to special characters', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&amp; &laquo;</span></a></td></tr></table></div><br />
+<input type="checkbox" name="properties[htmlEntity]" value="1" <?php checked( $properties['htmlEntity'] ); ?> />&nbsp;<div id="htmlEntityButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void()" title="<?php _e( 'Insert a HTML entitiy', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title="&amp;lt;">&lt;</span></a></td><td><a href="javascript:void()" title="<?php _e( 'Choose HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div><br />
+<input type="checkbox" name="properties[htmlSmily]" value="1" <?php checked( $properties['htmlSmily'] ); ?> />&nbsp;<div id="htmlSmilyButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void()" title="<?php _e( 'Insert a emoticon', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title=":smile:"><?php echo trim( str_replace( '\'', '"', convert_smilies( ':smile:' ) ) ); ?></span></a></td><td><a href="javascript:void()" title="<?php _e( 'Choose emoticons', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div><br />
+<input type="checkbox" name="properties[postLink]" value="1" <?php checked( $properties['postLink'] ); ?> />&nbsp;<div id="postLinkButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void()" title="<?php _e( 'Insert most recent post link', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span  class="mceActionButton">&nbsp;</span></a></td><td><a href="javascript:void()" title="<?php _e( 'Choose recent post link', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span  class="mceOpen"></span></a></td></tr></table></div><br />
 </td>
 </tr>
-<tr valign="top">
+<tr style="vertical-align: top;">
 <th><?php _e( 'Placement', HTML_ENTITIES_BUTTON_DOMAIN ); ?></th>
 <td>
 <input type="radio" name="properties[place]" id="place_prev" value="front" <?php checked( $properties['place'] != 'after' ); ?> />&nbsp;<label for="place_prev"><?php _e( 'It arranges in front of standard buttons.', HTML_ENTITIES_BUTTON_DOMAIN ); ?></label><br />
 <input type="radio" name="properties[place]" id="place_after" value="after" <?php checked( $properties['place'] == 'after' ); ?> />&nbsp;<label for="place_after"><?php _e( 'It arranges after standard buttons. ', HTML_ENTITIES_BUTTON_DOMAIN ); ?></label><br />
 </td>
 </tr>
-<tr valign="top">
+<?php if ( version_compare( $wp_version, '4.2-alpha', '>=' ) && $this->_classic_smiley_available() ) { ?>
+<tr style="vertical-align: top;">
+<th><?php _e( 'Optional' ); ?></th>
+<td>
+<input type="checkbox" name="properties[classicSmiley]" id="classicSmiley" value="1" <?php checked( $properties['classicSmiley'] ); ?> />&nbsp;<label for="classicSmiley"><?php _e( 'Use classic smiley.', HTML_ENTITIES_BUTTON_DOMAIN ); ?></label><br />
+</td>
+</tr>
+<?php } ?>
+<tr style="vertical-align: top;">
 <td colspan="2">
 <input type="submit" name="save" value="<?php _e( 'Save' ); ?>" class="button-primary" />
 </td>
 </tr>
 </table>
 </form>
+</div>
 <?php
+		if ( $properties['classicSmiley'] && $this->_classic_smiley_available() ) {
+			$wpsmiliestrans = $new_wpsmiliestrans;	// restore
+		}
 	}
 	function style() {
 		global $wp_version;
@@ -163,10 +266,19 @@ td.quicktags-toolbar input[type=checkbox] { vertical-align: 0.3em; }
 <?php
 	}
 	function setup() {
-		$properties = get_option( 'html_entities_button', array( 'place'=>'front', 'convertSpeChars'=>true, 'decodeSpeChars'=>true, 'htmlEntity'=>true, 'htmlSmily'=>true, 'postLink'=>true ) );
-
+		global $wpsmiliestrans;
+		if ( $this->_properties( 'classicSmiley' ) && $this->_classic_smiley_available() ) {
+			$new_wpsmiliestrans = $wpsmiliestrans;	// save
+			$wpsmiliestrans = $this->wpsmiliestrans;
+			$this->_setup();
+			$wpsmiliestrans = $new_wpsmiliestrans;	// restore
+		} else {
+			$this->_setup();
+		}
+	}
+	private function _setup() {
 		$smiles = get_option( 'use_smilies' );
-		if ( !isset( $properties["postLink"] ) || $properties["postLink"] )
+		if ( $this->_properties( 'postLink' ) )
 			$recent_posts = get_posts( 'numberposts=30' );
 		else
 			$recent_posts = array();
@@ -175,7 +287,7 @@ td.quicktags-toolbar input[type=checkbox] { vertical-align: 0.3em; }
 //<![CDATA[
 var keepPulldownList = false;
 // Create recent post list
-var posts = new Array( <?php echo count( $recent_posts ); ?>);
+var posts = new Array( <?php echo count( $recent_posts ); ?> );
 <?php
 	foreach ( $recent_posts as $id=>$recent_post ) {
 		echo "\tposts[$id] = {id:".$recent_post->ID.", title: '".htmlspecialchars( $recent_post->post_title, ENT_QUOTES )."', date:'".date( 'm/d h:i', strtotime( $recent_post->post_date ) )."', url:'".get_permalink( $recent_post->ID )."'};\n";
@@ -184,17 +296,17 @@ var posts = new Array( <?php echo count( $recent_posts ); ?>);
 jQuery.event.add( window, 'load', function( ) {
 jQuery( '#ed_toolbar' ).each( function() {
 	var hab_buttons = '';
-<?php if ( !isset( $properties["convertSpeChars"] ) || $properties["convertSpeChars"] ) { ?>
+<?php if ( $this->_properties( 'convertSpeChars' ) ) { ?>
 	hab_buttons += '<div id="convertSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return convertSpeChars(1);" title="<?php _e( 'Convert special characters to HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&raquo; &amp;amp;</span></a></td></tr></table></div>';
-<?php } if ( !isset( $properties["decodeSpeChars"] ) || $properties["decodeSpeChars"] ) { ?>
+<?php } if ( $this->_properties( 'decodeSpeChars' ) ) { ?>
 	hab_buttons += '<div id="decodeSpeCharsButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return convertSpeChars(0);" title="<?php _e( 'Convert HTML entities to special characters', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton">&amp; &laquo;</span></a></td></tr></table></div>';
-<?php } if ( !isset( $properties["htmlEntity"] ) || $properties["htmlEntity"] ) { ?>
+<?php } if ( $this->_properties( 'htmlEntity' ) ) { ?>
 	hab_buttons += '<div id="htmlEntityButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return enterHtmlEntity(\'\');" title="<?php _e( 'Insert a HTML entitiy', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title="&amp;lt;">&lt;</span></a></td><td><a href="javascript:void();" onclick="return toggleHtmlEntityList();" title="<?php _e( 'Choose HTML entities', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div>';
-<?php } if ( $smiles && ( !isset( $properties["htmlSmily"] ) || $properties["htmlSmily"] ) ) { ?>
+<?php } if ( $smiles && $this->_properties( 'htmlSmily' ) ) { ?>
 	hab_buttons += '<div id="htmlSmilyButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return enterHtmlSmily(\'\');" title="<?php _e( 'Insert a emoticon', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span class="mceActionButton" title=":smile:"><?php echo trim( str_replace( '\'', '"', convert_smilies( ':smile:' ) ) ); ?></span></a></td><td><a href="javascript:void();" onclick="return toggleHtmlSmilyList();" title="<?php _e( 'Choose emoticons', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span class="mceOpen"></span></a></td></tr></table></div>';
-<?php } if ( !isset( $properties["postLink"] ) || $properties["postLink"] ) { ?>
+<?php } if ( $this->_properties( 'postLink' ) ) { ?>
 	hab_buttons += '<div id="postLinkButton" class="htmlAdvancedButton"><table><tr><td><a href="javascript:void();" onclick="return enterPostLink(0);" title="<?php _e( 'Insert most recent post link', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceActionButton"><span  class="mceActionButton">&nbsp;</span></a></td><td><a href="javascript:void();" onclick="return togglePostLinkList();" title="<?php _e( 'Choose recent post link', HTML_ENTITIES_BUTTON_DOMAIN ); ?>" class="mceOpen"><span  class="mceOpen"></span></a></td></tr></table></div>';
-<?php } if ( isset( $properties["place"] ) && $properties["place"] == 'after' ) { ?>
+<?php } if ( $this->_properties( 'place', 'after', false ) ) { ?>
 	jQuery( this ).append( hab_buttons );
 <?php } else { ?>
 	jQuery( this ).prepend( hab_buttons );
@@ -212,7 +324,7 @@ jQuery( '#ed_toolbar' ).each( function() {
 			);
 	var i=0;
 	for ( key in entities ) {
-		entitiesContents += '<a href="javascript:;" onclick="return enterHtmlEntity(\''+entities[key].replace( '&', '&amp;' )+'\');">'+entities[key]+'</a>';
+		entitiesContents += '<a href="javascript:void(0)" onclick="return enterHtmlEntity(\''+entities[key].replace( '&', '&amp;' )+'\');">'+entities[key]+'</a>';
 		i++;
 		if ( i%8 == 0 ) entitiesContents += '<br />';
 	}
@@ -227,7 +339,7 @@ jQuery( '#ed_toolbar' ).each( function() {
 				$smillyContents = '';
 				foreach ( $htmlsmiles as $smile ) {
 					$smilyImg = trim( str_replace( '\'', '\\\'', convert_smilies( $smile ) ) );
-					$smillyContents .= '<a href="javascript:void(0);" onclick="return enterHtmlSmily(\\\''.$smile.'\\\', '.($i+1).');" id="htmlsmily_'.($i+1).'" title="'.$smile.'">'.$smilyImg.'</a>';
+					$smillyContents .= '<a href="javascript:void(0)" onclick="return enterHtmlSmily(\\\''.$smile.'\\\', '.($i+1).');" id="htmlsmily_'.($i+1).'" title="'.$smile.'">'.$smilyImg.'</a>';
 					$i++;
 					if ( $i%8 == 0 ) $smillyContents .= '<br />';
 				}
@@ -238,7 +350,7 @@ jQuery( '#ed_toolbar' ).each( function() {
 		?>
 	var postsContents = '<ul>';
 	for ( key in posts ) {
-		postsContents += '<li><a href="javascript:void(0);" onclick="return enterPostLink('+key+');"><span class="title"><span class="date">'+posts[key]['date']+'</span>'+posts[key]['title']+'</span></a></li>';
+		postsContents += '<li><a href="javascript:void(0)" onclick="return enterPostLink('+key+');"><span class="title"><span class="date">'+posts[key]['date']+'</span>'+posts[key]['title']+'</span></a></li>';
 	}
 	postsContents += '</ul>';
 	var pullDownLists = '<div id="htmlEntityList" class="mcePulldownList">'+entitiesContents+'</div>';
