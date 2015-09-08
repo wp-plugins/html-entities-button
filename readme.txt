@@ -3,8 +3,8 @@ Contributors: tmatsuur
 Donate link: http://elearn.jp/wpman/column/html-entities-button.html
 Tags: post, page, admin
 Requires at least: 3.2.0
-Tested up to: 4.2.0
-Stable tag: 1.6.0
+Tested up to: 4.3.0
+Stable tag: 1.7.0
 
 HTML entities button is a few inserting HTML entities button add to the admin post/page editor(HTML mode).
 
@@ -17,6 +17,7 @@ HTML entities button is a few inserting HTML entities button add to the admin po
 * Insert HTML special characters.
 * Insert recent post link.
 * Insert emoticons.
+* Insert wpemoji.
 * Convert special characters to HTML entities.
 
 = Support =
@@ -58,8 +59,12 @@ Check for [Convert emoticons like :-) and :-P to graphics on display] in Writing
 2. Choose emoticons.
 3. Choose recent posts.
 4. Convert special characters
+5. Choose wpemoji.
 
 == Changelog ==
+
+= 1.7.0 =
+* Added insert wpemoji button.
 
 = 1.6.0 =
 * `Use classic smiley` option was added.
